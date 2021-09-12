@@ -108,10 +108,10 @@ from article.permissions import IsAdminUserOrReadOnly
 
 from rest_framework import viewsets
 from article.serializers import ArticleSerializer
-from django_filters.rest_framework import DjangoFilterBackend
+# from django_filters.rest_framework import DjangoFilterBackend
 # from rest_framework import filters
 from article.models import Category
-from article.serializers import CategorySerializer
+# from article.serializers import CategorySerializer
 from article.serializers import CategorySerializer, CategoryDetailSerializer
 from article.models import Tag
 from article.serializers import TagSerializer
