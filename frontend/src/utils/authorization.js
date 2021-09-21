@@ -7,11 +7,10 @@ async function authorization() {
 
     let hasLogin = false;
     let username = storage.getItem('username.myblog');
-
+    let isSuperuser = storage.getItem('isSuperuser.myblog');
     const expiredTime = Number(storage.getItem('expiredTime.myblog'));
     const current = (new Date()).getTime();
     const refreshToken = storage.getItem('refresh.myblog');
-
     // 初始 token 未过期
     if (expiredTime > current) {
         hasLogin = true;
@@ -47,9 +46,7 @@ async function authorization() {
         console.log('authorization exp')
     }
 
-    console.log('authorization done');
-
-    return [hasLogin, username]
+    return [hasLogin, username,isSuperuser]
 }
 
 export default authorization;

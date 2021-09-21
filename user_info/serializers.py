@@ -53,4 +53,5 @@ class UserDetailSerializer(serializers.ModelSerializer):
             'email',
             'last_login',
             'date_joined',
+            'is_superuser'
         ]

@@ -5,6 +5,7 @@ import Login from "@/views/Login.vue";
 import UserCenter from "@/views/UserCenter.vue";
 import ArticleCreate from "@/views/ArticleCreate.vue";
 import ArticleEdit from "@/views/ArticleEdit.vue";
+import Register from "@/views/Register";
 
 const routes = [
     {
@@ -36,6 +37,11 @@ const routes = [
         path: "/login",
         name: "Login",
         component: Login
+    },
+   {
+        path: "/Register",
+        name: "register",
+        component: Register
     }
 ];
 

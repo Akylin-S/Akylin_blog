@@ -1,23 +1,6 @@
 <template>
   <BlogHeader />
 
-  <div id="grid">
-    <div id="signup">
-      <h3>注册账号</h3>
-      <form>
-        <div class="form-elem">
-          <span>账号：</span>
-          <input v-model="signupName" type="text" placeholder="输入用户名" />
-        </div>
-        <div class="form-elem">
-          <span>密码：</span>
-          <input v-model="signupPwd" type="password" placeholder="输入密码" />
-        </div>
-        <div class="form-elem">
-          <button v-on:click.prevent="signup">提交</button>
-        </div>
-      </form>
-    </div>
 
     <div>
       <div id="signin">
@@ -34,12 +17,11 @@
           </div>
 
           <div class="form-elem">
-            <button v-on:click.prevent="signin">登录</button>
+             <router-link to="/register" class="login-link">没有账号，跳转注册</router-link>
+            <button class="form-login" v-on:click.prevent="signin">登录</button>
           </div>
         </form>
       </div>
-      <!-- 留给后面章节的用户登录 -->
-    </div>
   </div>
 
   <BlogFooter />
@@ -55,34 +37,11 @@ export default {
   components: { BlogHeader, BlogFooter },
   data: function () {
     return {
-      signupName: "",
-      signupPwd: "",
-      signupResponse: null,
       signinName: "",
       signinPwd: "",
     };
   },
   methods: {
-    signup() {
-      const that = this;
-      axios
-
-        .post("/api/user/", {
-          username: this.signupName,
-          password: this.signupPwd,
-        })
-        .then(function (response) {
-          // 路由跳转修改到这里
-          that.$router.push({ name: "Home" });
-          that.signupResponse = response.data;
-          alert("用户注册成功，快去登录吧！");
-        })
-        .catch(function (error) {
-          alert(error.message);
-          // Handling Error here...
-          // https://github.com/axios/axios#handling-errors
-        });
-    },
     signin() {
       const that = this;
 
@@ -96,13 +55,13 @@ export default {
           const storage = localStorage;
           // Date.parse(...) 返回1970年1月1日UTC以来的毫秒数
           // Token 被设置为1分钟，因此这里加上60000毫秒
-
           const expiredTime = Date.parse(response.headers.date) + 60000;
           // 设置 localStorage
           storage.setItem("access.myblog", response.data.access);
           storage.setItem("refresh.myblog", response.data.refresh);
           storage.setItem("expiredTime.myblog", expiredTime);
           storage.setItem("username.myblog", that.signinName);
+          storage.setItem("isSuperuser.myblog", response.data.is_superuser);
           // 路由跳转
           // 登录成功后回到博客首页
           that.$router.push({ name: "Home" });
@@ -112,10 +71,9 @@ export default {
       axios
         .get("/api/user/" + that.signinName + "/").then(function (response) {
         const storage = localStorage;
-        console.log(response.data.is_superuser+'1')
         storage.setItem("isSuperuser.myblog", response.data.is_superuser);
         // 路由跳转修改到这里
-        
+
         that.$router.push({ name: "Home" });
       });
     },
@@ -124,21 +82,20 @@ export default {
 </script>
 
 <style scoped>
-#grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-}
+
 
 #signin {
   text-align: center;
 }
 
-#signup {
-  text-align: center;
-}
 .form-elem {
   padding: 10px;
 }
+
+.form-login{
+ margin-left:50px;
+}
+
 input {
   height: 25px;
   padding-left: 10px;
@@ -151,6 +108,10 @@ button {
   background: gray;
   color: whitesmoke;
   border-radius: 5px;
-  width: 60px;
+  width: 100px;
+}
+
+.login-link {
+  color: black;
 }
 </style>
