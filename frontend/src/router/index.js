@@ -6,12 +6,18 @@ import UserCenter from "@/views/UserCenter.vue";
 import ArticleCreate from "@/views/ArticleCreate.vue";
 import ArticleEdit from "@/views/ArticleEdit.vue";
 import Register from "@/views/Register";
+import Logout from "@/views/Logout";
 
 const routes = [
     {
         path: "/",
         name: "Home",
         component: Home,
+    },
+        {
+        path: "/",
+        name: "Logout",
+        component: Logout,
     },
     {
         path: "/article/:id",

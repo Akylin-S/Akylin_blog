@@ -9,6 +9,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from user_info.serializers import UserDetailSerializer
 
+
 class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
@@ -17,6 +18,7 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.request.method == 'POST':
             self.permission_classes = [AllowAny]
+
         else:
             self.permission_classes = [IsAuthenticatedOrReadOnly, IsSelfOrReadOnly]
 
@@ -31,7 +33,7 @@ class UserViewSet(viewsets.ModelViewSet):
     @action(detail=False)
     def sorted(self, request):
         users = User.objects.all().order_by('-username')
-
+        print(1234567)
         page = self.paginate_queryset(users)
         if page is not None:
             serializer = self.get_serializer(page, many=True)

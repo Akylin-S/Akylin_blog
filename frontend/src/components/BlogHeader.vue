@@ -18,7 +18,7 @@
             <router-link :to="{ name: 'ArticleCreate' }" v-if="isSuperuser">
               发表文章
             </router-link>
-            <router-link to="/" >
+            <router-link :to="{name: 'Logout'}" >
               退出
             </router-link>
           </div>
@@ -56,12 +56,14 @@ export default {
     };
   },
 
-  methods: {
-    refresh() {
-      this.username = localStorage.getItem("username.myblog");
-    },
-
-  },
+  // methods: {
+  //   refresh() {
+  //           console.log(2111111312)
+  //
+  //     this.username = localStorage.getItem("username.myblog");
+  //   },
+  //
+  // },
 
   mounted() {
         authorization().then((data) => ([this.hasLogin, this.username,this.isSuperuser] = data))

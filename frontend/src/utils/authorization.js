@@ -21,14 +21,14 @@ async function authorization() {
     else if (refreshToken !== null) {
         try {
             let response = await axios.post('/api/token/refresh/', { refresh: refreshToken });
+            hasLogin = true;
 
-            const nextExpiredTime = Date.parse(response.headers.date) + 60000;
+            const nextExpiredTime = Date.parse(response.headers.date) + 360000;
 
             storage.setItem('access.myblog', response.data.access);
             storage.setItem('expiredTime.myblog', nextExpiredTime);
             storage.removeItem('refresh.myblog');
 
-            hasLogin = true;
 
             console.log('authorization refresh')
         }

@@ -81,6 +81,10 @@
                                     that.$router.push({name: 'Home'});
                                 })
                         }
+                        if (!response[0]) {
+                            alert('登录已过期，请重新登录');
+                            return
+                        }
                     })
             },
             changeInfo() {
