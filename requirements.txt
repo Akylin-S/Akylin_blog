@@ -19,6 +19,3 @@ requests==2.26.0
 requests-toolbelt==0.9.1
 sqlparse==0.4.1
 urllib3==1.26.6
-pillow-8.3.2
-
-
