@@ -12,6 +12,10 @@
           <span>密码：</span>
           <input v-model="Register_Pwd" type="password" placeholder="输入密码" />
         </div>
+        <div class="form-elem-confirm">
+          <span>确认密码：</span>
+          <input v-model="Register_Pwd_confirm" type="password" placeholder="输入密码" />
+        </div>
         <div class="form-elem">
           <router-link   to="/login" class="login-link">已有账号，去登录</router-link>
           <button class="form-register" v-on:click.prevent="Register_up">提交</button>
@@ -41,6 +45,11 @@ export default {
   methods: {
     Register_up() {
       const that = this;
+      if (this.Register_Pwd != this.Register_Pwd_confirm)
+      {
+        alert("两次输入的密码不相同，请确认");
+        return
+      }
       axios
 
         .post("/api/user/", {
@@ -53,8 +62,10 @@ export default {
           that.Register_Response = response.data;
           alert("用户注册成功，快去登录吧！");
         })
-        .catch(function (error) {
-          alert(error.message);
+        .catch(
+            function (error) {
+              console.log(error)
+              alert('用户名已被注册：');
           // Handling Error here...
           // https://github.com/axios/axios#handling-errors
         });
@@ -70,6 +81,9 @@ export default {
 }
 .form-elem {
   padding: 10px;
+}
+.form-elem-confirm {
+  padding: 10px 40px 10px 10px;
 }
 input {
   height: 25px;

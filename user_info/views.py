@@ -14,7 +14,6 @@ class UserViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     serializer_class = UserRegisterSerializer
     lookup_field = 'username'
-
     def get_permissions(self):
         if self.request.method == 'POST':
             self.permission_classes = [AllowAny]
@@ -28,13 +27,14 @@ class UserViewSet(viewsets.ModelViewSet):
     def info(self, request, username=None):
         queryset = User.objects.get(username=username)
         serializer = UserDetailSerializer(queryset, many=False)
+
         return Response(serializer.data)
 
     @action(detail=False)
     def sorted(self, request):
         users = User.objects.all().order_by('-username')
-        print(1234567)
         page = self.paginate_queryset(users)
+
         if page is not None:
             serializer = self.get_serializer(page, many=True)
             return self.get_paginated_response(serializer.data)

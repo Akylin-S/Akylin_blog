@@ -44,7 +44,7 @@ export default {
   methods: {
     signin() {
       const that = this;
-      axios
+   axios
         .post("/api/token/", {
           username: that.signinName,
           password: that.signinPwd,
@@ -63,9 +63,17 @@ export default {
           // 登录成功后回到博客首页
 
           that.$router.push({ name: "Home" });
-        });
+        })
       // 读者自行补充错误处理
-      // .catch(...)
+        .catch(
+                        function (error) {
+                          console.log(error)
+          alert('账号或密码错误');
+          // Handling Error here...
+          // https://github.com/axios/axios#handling-errors
+        }
+
+        )
        axios
             .get("/api/user/" + that.signinName + "/").then(function (response) {
               const storage = localStorage;
