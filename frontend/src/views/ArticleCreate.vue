@@ -49,21 +49,27 @@
         <button v-on:click.prevent="submit">提交</button>
       </div>
     </form>
+    <md-editor  v-model="text"   @onUploadImg="onUploadImg" />
   </div>
   <BlogFooter />
 </template>
 
-<script>
+<script lang="ts">
 import BlogHeader from "@/components/BlogHeader.vue";
 import BlogFooter from "@/components/BlogFooter.vue";
 import axios from "axios";
 import authorization from "@/utils/authorization";
+import MdEditor from 'md-editor-v3';
+import 'md-editor-v3/lib/style.css';
+
+//表格显示
 
 export default {
   name: "ArticleCreate",
-  components: { BlogHeader, BlogFooter },
+  components: { BlogHeader, MdEditor,BlogFooter },
   data: function () {
     return {
+      toolbarsExclude: ['github'],
       // 文章标题
       title: "",
       // 文章正文
@@ -76,6 +82,7 @@ export default {
       tags: "",
       // 标题图 id
       avatarID: null,
+      text: ''
     };
   },
   mounted() {
@@ -85,9 +92,16 @@ export default {
       .then((response) => (this.categories = response.data));
   },
   methods: {
+      onUploadImg(files) {
+      console.log(Array.from(files));
+      console.log(files[0]);
+
+    },
     onFileChange(e) {
       // 将文件二进制数据添加到提交数据中
+      console.log(e)
       const file = e.target.files[0];
+      console.log(file)
       let formData = new FormData();
       formData.append("content", file);
 
@@ -96,7 +110,7 @@ export default {
         .post("/api/avatar/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            Authorization: "Bearer " + localStorage.getItem("access.myblog"),
+            // Authorization: "Bearer " + localStorage.getItem("access.myblog"),
           },
         })
         .then((response) => (this.avatarID = response.data.id));

@@ -57,7 +57,8 @@
 
   export default {
     name: 'ArticleEdit',
-    components: {BlogHeader, BlogFooter},
+    components: {BlogHeader,BlogFooter},
+
     data: function () {
       return {
         title: '',
