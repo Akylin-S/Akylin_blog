@@ -8552,4 +8552,8 @@ article/__pycache__/models.cpython-39.pyc
 article/__pycache__/permissions.cpython-39.pyc
 article/__pycache__/serializers.cpython-39.pyc
 article/__pycache__/views.cpython-39.pyc
-db.sqlite3
+
+article/__pycache__/tests.cpython-39.pyc
+comment/__pycache__/tests.cpython-39.pyc
+.gitignore
+user_info/__pycache__/tests.cpython-39.pyc
