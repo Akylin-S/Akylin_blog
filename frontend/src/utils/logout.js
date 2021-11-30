@@ -9,7 +9,6 @@ async function logout() {
 
      let username = storage.getItem('username.myblog');
     let isSuperuser = storage.getItem('isSuperuser.myblog');
-    console.log(777)
     return [hasLogin, username,isSuperuser]
 }
 

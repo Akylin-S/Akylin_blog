@@ -8,6 +8,11 @@ async function authorization() {
     let hasLogin = false;
     let username = storage.getItem('username.myblog');
     let isSuperuser = storage.getItem('isSuperuser.myblog');
+    if (isSuperuser === 'true')
+            isSuperuser=true
+    else
+            isSuperuser=false
+
     const expiredTime = Number(storage.getItem('expiredTime.myblog'));
     const current = (new Date()).getTime();
     const refreshToken = storage.getItem('refresh.myblog');

@@ -22,8 +22,6 @@
         </div>
       </form>
     </div>
-
-
   <BlogFooter />
 </template>
 

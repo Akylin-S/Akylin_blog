@@ -5,6 +5,9 @@
       <h1>Kylin`s Blog</h1>
       <SearchButton />
     </div>
+    <div id="menu">
+      <router-link :to="{ name: 'Home' }" class="home">Home</router-link>
+    </div>
     <hr />
     <div class="login">
       <div v-if="hasLogin">
@@ -18,9 +21,7 @@
             <router-link :to="{ name: 'ArticleCreate' }" v-if="isSuperuser">
               发表文章
             </router-link>
-            <router-link :to="{name: 'Logout'}" >
-              退出
-            </router-link>
+            <router-link :to="{ name: 'Logout' }"> 退出 </router-link>
           </div>
         </div>
       </div>
@@ -42,12 +43,11 @@ export default {
   props: ["welcomeName"],
   computed: {
     name() {
-      return this.welcomeName !== undefined ? this.welcomeName : this.username;
+      return this.welcomeName != undefined ? this.welcomeName : this.username;
     },
   },
 
   data: function () {
-    console.log(localStorage.getItem("isSuperuser.myblog"));
 
     return {
       username: "",
@@ -66,10 +66,10 @@ export default {
   // },
 
   mounted() {
-        authorization().then((data) => ([this.hasLogin, this.username,this.isSuperuser] = data))
+    authorization().then(
+      (data) => ([this.hasLogin, this.username, this.isSuperuser] = data)
+    );
   },
-
-
 };
 </script>
 
@@ -79,6 +79,13 @@ export default {
   margin-top: 20px;
 }
 
+#menu {
+  text-align: left;
+}
+.home {
+  color: black;
+  text-decoration: none;
+}
 .grid {
   display: grid;
   grid-template-columns: 1fr 4fr 1fr;

@@ -17,17 +17,15 @@ class UserViewSet(viewsets.ModelViewSet):
     def get_permissions(self):
         if self.request.method == 'POST':
             self.permission_classes = [AllowAny]
-
         else:
             self.permission_classes = [IsAuthenticatedOrReadOnly, IsSelfOrReadOnly]
-
         return super().get_permissions()
 
     @action(detail=True, methods=['get'])
     def info(self, request, username=None):
         queryset = User.objects.get(username=username)
         serializer = UserDetailSerializer(queryset, many=False)
-
+        print(1)
         return Response(serializer.data)
 
     @action(detail=False)
@@ -40,4 +38,6 @@ class UserViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(users, many=True)
+        print(2)
+
         return Response(serializer.data)
