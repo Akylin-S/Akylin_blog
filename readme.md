@@ -19,3 +19,8 @@ python manage.py startapp article
 ```
 python manage.py createsuperuser
 ```
+
+## 清空数据库数据
+```
+python manage.py flush
+```
