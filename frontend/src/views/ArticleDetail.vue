@@ -47,8 +47,7 @@ export default {
   },
   computed: {
     isSuperuser() {
-      //   return localStorage.getItem('isSuperuser.myblog') === 'true'
-      return true;
+        return localStorage.getItem('isSuperuser.myblog') === 'true'
     },
   },
   methods: {
