@@ -4,52 +4,20 @@
   <BlogHeader />
   <div id="article-create">
     <h3>发表文章</h3>
-    <form id="image_form">
-      <div class="form-elem">
-        <span>图片：</span>
-        <input v-on:change="onFileChange" type="file" id="file" />
-      </div>
-    </form>
     <form>
       <div class="form-elem">
         <span>标题：</span>
         <input v-model="title" type="text" placeholder="输入标题" />
       </div>
-
-      <div class="form-elem">
-        <span>分类：</span>
-        <span v-for="category in categories" :key="category.id">
-          <!--样式也可以通过 :style 绑定-->
-          <button
-            class="category-btn"
-            :style="categoryStyle(category)"
-            @click.prevent="chooseCategory(category)"
-          >
-            {{ category.title }}
-          </button>
-        </span>
-      </div>
-
       <div class="form-elem">
         <span>标签：</span>
         <input v-model="tags" type="text" placeholder="输入标签，用逗号分隔" />
       </div>
-
-      <div class="form-elem">
-        <span>正文：</span>
-        <textarea
-          v-model="body"
-          placeholder="输入正文"
-          rows="20"
-          cols="80"
-        ></textarea>
-      </div>
-
+      <editor v-model="body" :toolbarsExclude="toolbarsExclude" @onUploadImg="onUploadImg" />
       <div class="form-elem">
         <button v-on:click.prevent="submit">提交</button>
       </div>
     </form>
-    <md-editor  v-model="text"   @onUploadImg="onUploadImg" />
   </div>
   <BlogFooter />
 </template>
@@ -59,17 +27,17 @@ import BlogHeader from "@/components/BlogHeader.vue";
 import BlogFooter from "@/components/BlogFooter.vue";
 import axios from "axios";
 import authorization from "@/utils/authorization";
-import MdEditor from 'md-editor-v3';
-import 'md-editor-v3/lib/style.css';
+import Editor from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
 
 //表格显示
 
 export default {
   name: "ArticleCreate",
-  components: { BlogHeader, MdEditor,BlogFooter },
+  components: { BlogHeader, Editor, BlogFooter },
   data: function () {
     return {
-      toolbarsExclude: ['github'],
+ 
       // 文章标题
       title: "",
       // 文章正文
@@ -82,7 +50,8 @@ export default {
       tags: "",
       // 标题图 id
       avatarID: null,
-      text: ''
+      text: "",
+      // toolbarsExclude:['github'],
     };
   },
   mounted() {
@@ -92,16 +61,15 @@ export default {
       .then((response) => (this.categories = response.data));
   },
   methods: {
-      onUploadImg(files) {
+    onUploadImg(files) {
       console.log(Array.from(files));
       console.log(files[0]);
-
     },
     onFileChange(e) {
       // 将文件二进制数据添加到提交数据中
-      console.log(e)
+      // console.log(e);
       const file = e.target.files[0];
-      console.log(file)
+      // console.log(file);
       let formData = new FormData();
       formData.append("content", file);
 
@@ -110,7 +78,7 @@ export default {
         .post("/api/avatar/", formData, {
           headers: {
             "Content-Type": "multipart/form-data",
-            // Authorization: "Bearer " + localStorage.getItem("access.myblog"),
+            Authorization: "Bearer " + localStorage.getItem("access.myblog"),
           },
         })
         .then((response) => (this.avatarID = response.data.id));
@@ -209,11 +177,12 @@ form {
 }
 .form-elem {
   padding: 10px;
+  text-align: center;
 }
 input {
   height: 25px;
   padding-left: 10px;
-  width: 50%;
+  width: 90%;
 }
 button {
   height: 35px;

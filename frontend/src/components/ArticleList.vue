@@ -74,6 +74,7 @@ export default {
       return date.toLocaleDateString();
     },
     imageIfExists(article) {
+      // console.log(article)
       if (article.avatar) {
         return article.avatar.content;
       }

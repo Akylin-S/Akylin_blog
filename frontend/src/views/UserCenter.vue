@@ -98,7 +98,7 @@
                             alert('登录已过期，请重新登录');
                             return
                         }
-                        console.log('change info start');
+                        // console.log('change info start');
                         // 密码不能小于 6 位
                         if (that.password.length > 0 && that.password.length < 6) {
                             alert('Password too short.');

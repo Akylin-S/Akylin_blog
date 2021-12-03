@@ -68,7 +68,7 @@ export default {
         .catch(
                         function (error) {
                           console.log(error)
-          alert('账号或密码错误');
+          alert('账号或密码错误:');
           // Handling Error here...
           // https://github.com/axios/axios#handling-errors
         }
