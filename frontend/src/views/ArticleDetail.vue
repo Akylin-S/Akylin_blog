@@ -16,6 +16,7 @@
         </span>
       </p>
       <div v-html="article.body_html" class="article-body"></div>
+         <div  class="article-body" v-markdown="article.body_html"></div>
     </div>
     <div>
       <h3>目录</h3>
@@ -31,6 +32,7 @@ import axios from "axios";
 import BlogHeader from "@/components/BlogHeader.vue";
 import BlogFooter from "@/components/BlogFooter.vue";
 import Comments from "@/components/Comments.vue";
+
 export default {
   name: "ArticleDetail",
 

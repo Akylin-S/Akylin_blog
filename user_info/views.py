@@ -1,10 +1,8 @@
 from django.contrib.auth.models import User
 from rest_framework import viewsets
 from rest_framework.permissions import AllowAny, IsAuthenticatedOrReadOnly
-
 from user_info.serializers import UserRegisterSerializer
 from user_info.permissions import IsSelfOrReadOnly
-
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from user_info.serializers import UserDetailSerializer
@@ -25,7 +23,6 @@ class UserViewSet(viewsets.ModelViewSet):
     def info(self, request, username=None):
         queryset = User.objects.get(username=username)
         serializer = UserDetailSerializer(queryset, many=False)
-        print(1)
         return Response(serializer.data)
 
     @action(detail=False)
@@ -38,6 +35,5 @@ class UserViewSet(viewsets.ModelViewSet):
             return self.get_paginated_response(serializer.data)
 
         serializer = self.get_serializer(users, many=True)
-        print(2)
 
         return Response(serializer.data)
