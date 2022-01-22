@@ -13,16 +13,16 @@
       <div class="form-elem">
         <span>分类：</span>
         <span
-              v-for="category in categories"
-              :key="category.id"
+              v-for="topic in categories"
+              :key="topic.id"
               >
           <!--样式也可以通过 :style 绑定-->
           <button
-                  class="category-btn"
-                  :style="categoryStyle(category)"
-                  @click.prevent="chooseCategory(category)"
+                  class="topic-btn"
+                  :style="topicStyle(topic)"
+                  @click.prevent="choosetopic(topic)"
                   >
-            {{category.title}}
+            {{topic.title}}
           </button>
         </span>
       </div>
@@ -34,7 +34,7 @@
 
       <div class="form-elem">
         <span>正文：</span>
-        <textarea v-model="body" placeholder="输入正文" rows="20" cols="80"></textarea>
+          <editor v-model="body" :previewTheme='github' />
       </div>
 
       <div class="form-elem">
@@ -54,10 +54,12 @@
   import BlogFooter from '@/components/BlogFooter.vue'
   import axios from 'axios';
   import authorization from '@/utils/authorization';
+  import Editor from "md-editor-v3";
+  import "md-editor-v3/lib/style.css";
 
   export default {
     name: 'ArticleEdit',
-    components: {BlogHeader,BlogFooter},
+    components: {BlogHeader,BlogFooter,Editor},
 
     data: function () {
       return {
@@ -67,7 +69,7 @@
         // 所有分类
         categories: [],
         // 选定的分类
-        selectedCategory: null,
+        selectedtopic: null,
         // 标签
         tags: '',
 
@@ -78,7 +80,7 @@
     mounted() {
       // 页面初始化时获取所有分类
       axios
-        .get('/api/category/')
+        .get('/api/topic/')
         .then(response => this.categories = response.data);
 
       // 与前面章节说的一样
@@ -92,15 +94,15 @@
           const data = response.data;
           that.title = data.title;
           that.body = data.body;
-          that.selectedCategory = data.category;
+          that.selectedtopic = data.topic;
           that.tags = data.tags.join(',');
           that.articleID = data.id;
         })
     },
     methods: {
       // 根据分类是否被选中，按钮的颜色发生变化
-      categoryStyle(category) {
-        if (this.selectedCategory !== null && category.id === this.selectedCategory.id) {
+      topicStyle(topic) {
+        if (this.selectedtopic !== null && topic.id === this.selectedtopic.id) {
           return {
             backgroundColor: 'black',
           }
@@ -111,13 +113,13 @@
         }
       },
       // 选取分类
-      chooseCategory(category) {
-        // 如果点击已选取的分类，则将 selectedCategory 置空
-        if (this.selectedCategory !== null && this.selectedCategory.id === category.id) {
-          this.selectedCategory = null
+      choosetopic(topic) {
+        // 如果点击已选取的分类，则将 selectedtopic 置空
+        if (this.selectedtopic !== null && this.selectedtopic.id === topic.id) {
+          this.selectedtopic = null
         }
         else {
-          this.selectedCategory = category;
+          this.selectedtopic = topic;
         }
       },
       // 点击提交按钮
@@ -133,7 +135,7 @@
                 body: that.body,
               };
 
-              data.category_id = that.selectedCategory ? that.selectedCategory.id : null;
+              data.topic_id = that.selectedtopic ? that.selectedtopic.id : null;
 
               data.tags = that.tags
                 .split(/[,，]/)
@@ -181,7 +183,7 @@
 </script>
 
 <style scoped>
-  .category-btn {
+  .topic-btn {
     margin-right: 10px;
   }
   #article-create {

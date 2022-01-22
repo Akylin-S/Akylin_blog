@@ -13,7 +13,7 @@
         <span>标签：</span>
         <input v-model="tags" type="text" placeholder="输入标签，用逗号分隔" />
       </div>
-      <editor v-model="body" :toolbarsExclude="toolbarsExclude" @onUploadImg="onUploadImg" />
+      <editor v-model="body"  :toolbarsExclude="toolbarsExclude" @onUploadImg="onUploadImg" />
       <div class="form-elem">
         <button v-on:click.prevent="submit">提交</button>
       </div>
@@ -45,7 +45,7 @@ export default {
       // 数据库中所有的分类
       categories: [],
       // 选定的分类
-      selectedCategory: null,
+      selectedtopic: null,
       // 标签
       tags: "",
       // 标题图 id
@@ -57,7 +57,7 @@ export default {
   mounted() {
     // 页面初始化时获取所有分类
     axios
-      .get("/api/category/")
+      .get("/api/topic/")
       .then((response) => (this.categories = response.data));
   },
   methods: {
@@ -67,9 +67,7 @@ export default {
     },
     onFileChange(e) {
       // 将文件二进制数据添加到提交数据中
-      // console.log(e);
       const file = e.target.files[0];
-      // console.log(file);
       let formData = new FormData();
       formData.append("content", file);
 
@@ -85,10 +83,10 @@ export default {
     },
     // 根据分类是否被选中，按钮的颜色发生变化
     // 这里可以看出 css 也是可以被 vue 绑定的，很方便
-    categoryStyle(category) {
+    topicStyle(topic) {
       if (
-        this.selectedCategory !== null &&
-        category.id === this.selectedCategory.id
+        this.selectedtopic !== null &&
+        topic.id === this.selectedtopic.id
       ) {
         return {
           backgroundColor: "black",
@@ -100,17 +98,17 @@ export default {
       };
     },
     // 选取分类的方法
-    chooseCategory(category) {
-      // 如果点击已选取的分类，则将 selectedCategory 置空
+    choosetopic(topic) {
+      // 如果点击已选取的分类，则将 selectedtopic 置空
       if (
-        this.selectedCategory !== null &&
-        this.selectedCategory.id === category.id
+        this.selectedtopic !== null &&
+        this.selectedtopic.id === topic.id
       ) {
-        this.selectedCategory = null;
+        this.selectedtopic = null;
       }
       // 如果没选中当前分类，则选中它
       else {
-        this.selectedCategory = category;
+        this.selectedtopic = topic;
       }
     },
     // 点击提交按钮
@@ -125,8 +123,8 @@ export default {
             body: that.body,
           };
           // 添加分类
-          if (that.selectedCategory) {
-            data.category_id = that.selectedCategory.id;
+          if (that.selectedtopic) {
+            data.topic_id = that.selectedtopic.id;
           }
           // 新增代码
           // 添加标题图 id
@@ -163,7 +161,7 @@ export default {
 </script>
 
 <style scoped>
-.category-btn {
+.topic-btn {
   margin-right: 10px;
 }
 #article-create {

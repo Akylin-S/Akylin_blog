@@ -3,7 +3,7 @@
 
   <div v-if="article !== null" class="grid-container">
     <div>
-      <h1 id="title">{{ article.title }}</h1>
+      <h1 id="title" v-html="article.title"></h1>
       <p id="subtitle">
         本文由 {{ article.author.username }} 发布于
         {{ formatted_time(article.created) }}
@@ -15,11 +15,9 @@
           </router-link>
         </span>
       </p>
-      <div v-html="article.body_html" class="article-body"></div>
-         <div  class="article-body" v-markdown="article.body_html"></div>
+          <editor v-model="article.body_html" :previewTheme='github' :previewOnly='true' />
     </div>
     <div>
-      <h3>目录</h3>
       <div v-html="article.toc_html" class="toc"></div>
     </div>
   </div>
@@ -32,11 +30,12 @@ import axios from "axios";
 import BlogHeader from "@/components/BlogHeader.vue";
 import BlogFooter from "@/components/BlogFooter.vue";
 import Comments from "@/components/Comments.vue";
-
+import Editor from "md-editor-v3";
+import "md-editor-v3/lib/style.css";
 export default {
   name: "ArticleDetail",
 
-  components: { BlogHeader, BlogFooter,Comments },
+  components: { BlogHeader, BlogFooter,Comments,Editor},
   data: function () {
     return {
       article: null,

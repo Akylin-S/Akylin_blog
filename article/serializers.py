@@ -2,34 +2,8 @@ from comment.serializers import CommentSerializer
 from rest_framework import serializers
 from article.models import Article, Avatar
 from user_info.serializers import UserDescSerializer
-from article.models import Category
+from article.models import topic
 from article.models import Tag
-
-
-# # 父类变成了 ModelSerializer
-# class ArticleListSerializer(serializers.ModelSerializer):
-#     # class Meta:
-#     #     model = Article
-#     #     fields = '__all__'
-#     #      # 新增代码
-#     #     read_only_fields = ['author']
-#        # read_only 参数设置为只读
-#     author = UserDescSerializer(read_only=True)
-# # 新增字段，添加超链接
-#     url = serializers.HyperlinkedIdentityField(view_name="article:detail")
-
-#     class Meta:
-#         model = Article
-#         fields = [
-#             'id',
-#             'title',
-#             'created',
-#             'author',
-#             'url',
-#         ]
-
-
-# 重构代码
 
 class AvatarSerializer(serializers.ModelSerializer):
     url = serializers.HyperlinkedIdentityField(view_name='avatar-detail')
@@ -58,12 +32,12 @@ class TagSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = Tag
         fields = '__all__'
-class CategorySerializer(serializers.ModelSerializer):
+class topicSerializer(serializers.ModelSerializer):
     """分类的序列化器"""
-    url = serializers.HyperlinkedIdentityField(view_name='category-detail')
+    url = serializers.HyperlinkedIdentityField(view_name='topic-detail')
 
     class Meta:
-        model = Category
+        model = topic
         fields = '__all__'
         read_only_fields = ['created']
 
@@ -74,11 +48,11 @@ class ArticleBaseSerializer(serializers.HyperlinkedModelSerializer):
     """博文序列化器"""
     author = UserDescSerializer(read_only=True)
     
-    # category 的嵌套序列化字段
-    category = CategorySerializer(read_only=True)
+    # topic 的嵌套序列化字段
+    topic = topicSerializer(read_only=True)
 
-    # category 的 id 字段，用于创建/更新 category 外键
-    category_id = serializers.IntegerField(
+    # topic 的 id 字段，用于创建/更新 topic 外键
+    topic_id = serializers.IntegerField(
         write_only=True,
         allow_null=True,
         required=False
@@ -100,25 +74,9 @@ class ArticleBaseSerializer(serializers.HyperlinkedModelSerializer):
         required=False
     )
 
-    # # category_id 字段的验证器
-    # def validate_category_id(self, value):
-    #     if not Category.objects.filter(id=value).exists() and value is not None:
-    #         raise serializers.ValidationError("Category with id {} not exists.".format(value))
-    #     return value
-
-    # # 验证图片 id 是否存在
-    # # 不存在则返回验证错误
-    # def validate_avatar_id(self, value):
-    #     if not Avatar.objects.filter(id=value).exists() and value is not None:
-    #         raise serializers.ValidationError("Avatar with id {} not exists.".format(value))
-
-    #     return value
-
- # 分类与标题图方法类似，重构
- # 自定义错误信息
     default_error_messages = {
         'incorrect_avatar_id': 'Avatar with id {value} not exists.',
-        'incorrect_category_id': 'Category with id {value} not exists.',
+        'incorrect_topic_id': 'topic with id {value} not exists.',
         'default': 'No more message here..'
     }
 
@@ -138,11 +96,11 @@ class ArticleBaseSerializer(serializers.HyperlinkedModelSerializer):
 
         return value
 
-    def validate_category_id(self, value):
+    def validate_topic_id(self, value):
         self.check_obj_exists_or_fail(
-            model=Category,
+            model=topic,
             value=value,
-            message='incorrect_category_id'
+            message='incorrect_topic_id'
         )
 
         return value
@@ -188,7 +146,7 @@ class ArticleDetailSerializer(ArticleBaseSerializer):
         model = Article
         fields = '__all__'
 
-class ArticleCategoryDetailSerializer(serializers.ModelSerializer):
+class ArticletopicDetailSerializer(serializers.ModelSerializer):
     """给分类详情的嵌套序列化器"""
     url = serializers.HyperlinkedIdentityField(view_name='article-detail')
 
@@ -200,12 +158,12 @@ class ArticleCategoryDetailSerializer(serializers.ModelSerializer):
         ]
 
 
-class CategoryDetailSerializer(serializers.ModelSerializer):
+class topicDetailSerializer(serializers.ModelSerializer):
     """分类详情"""
-    articles = ArticleCategoryDetailSerializer(many=True, read_only=True)
+    articles = ArticletopicDetailSerializer(many=True, read_only=True)
 
     class Meta:
-        model = Category
+        model = topic
         fields = [
             'id',
             'title',

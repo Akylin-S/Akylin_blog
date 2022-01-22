@@ -56,14 +56,6 @@ export default {
     };
   },
 
-  // methods: {
-  //   refresh() {
-  //           console.log(2111111312)
-  //
-  //     this.username = localStorage.getItem("username.myblog");
-  //   },
-  //
-  // },
 
   mounted() {
     authorization().then(

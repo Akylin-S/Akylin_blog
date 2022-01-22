@@ -8,8 +8,8 @@
       </div>
       <div>
         <div>
-          <span v-if="article.category !== null" class="category">
-            {{ article.category.title }}
+          <span v-if="article.topic !== null" class="topic">
+            {{ article.topic.title }}
           </span>
           <span v-for="tag in article.tags" v-bind:key="tag" class="tag">
             {{ tag }}
@@ -74,7 +74,6 @@ export default {
       return date.toLocaleDateString();
     },
     imageIfExists(article) {
-      // console.log(article)
       if (article.avatar) {
         return article.avatar.content;
       }
@@ -142,7 +141,7 @@ a {
   padding-left: 10px;
   padding-right: 10px;
 }
-.category {
+.topic {
   padding: 5px 10px 5px 10px;
   margin: 5px 5px 5px 0;
   font-family: Georgia, Arial, sans-serif;

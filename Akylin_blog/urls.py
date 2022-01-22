@@ -20,7 +20,6 @@ from rest_framework.routers import DefaultRouter
 from article import views
 from django.conf import settings
 from django.conf.urls.static import static
-# 这里直接导入 views 会冲突
 from comment.views import CommentViewSet
 
 from rest_framework_simplejwt.views import (
@@ -31,7 +30,7 @@ from user_info.views import UserViewSet
 
 router = DefaultRouter()
 router.register(r'article', views.ArticleViewSet)
-router.register(r'category', views.CategoryViewSet)
+router.register(r'topic', views.topicViewSet)
 router.register(r'tag', views.TagViewSet)
 router.register(r'avatar', views.AvatarViewSet)
 router.register(r'comment', CommentViewSet)

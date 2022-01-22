@@ -1,37 +1,26 @@
 
-from article.models import Article
-
 from article.permissions import IsAdminUserOrReadOnly
-
-from rest_framework import viewsets
-from article.serializers import ArticleSerializer
-from article.models import Category
-from article.serializers import CategorySerializer, CategoryDetailSerializer
-from article.models import Tag
-from article.serializers import TagSerializer
-from article.serializers import ArticleDetailSerializer
-
-from article.models import Avatar
-from article.serializers import AvatarSerializer
-from rest_framework import filters
+from rest_framework import viewsets,filters
+from article.models import topic,Tag,Avatar,Article
+from article.serializers import topicSerializer, topicDetailSerializer,TagSerializer,ArticleDetailSerializer,AvatarSerializer,ArticleSerializer
 
 class AvatarViewSet(viewsets.ModelViewSet):
     queryset = Avatar.objects.all()
     serializer_class = AvatarSerializer
     permission_classes = [IsAdminUserOrReadOnly]
 
-class CategoryViewSet(viewsets.ModelViewSet):
+class topicViewSet(viewsets.ModelViewSet):
     """分类视图集"""
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
+    queryset = topic.objects.all()
+    serializer_class = topicSerializer
     permission_classes = [IsAdminUserOrReadOnly]
     pagination_class = None
 
     def get_serializer_class(self):
         if self.action == 'list':
-            return CategorySerializer
+            return topicSerializer
         else:
-            return CategoryDetailSerializer    
+            return topicDetailSerializer    
 
 
 
@@ -55,7 +44,6 @@ class ArticleViewSet(viewsets.ModelViewSet):
 
         if username is not None:
             queryset = queryset.filter(author__username=username)
-
         return queryset
 
     def perform_create(self, serializer):

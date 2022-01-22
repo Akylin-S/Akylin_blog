@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from markdown import Markdown
 
-class Category(models.Model):
+class topic(models.Model):
     """文章分类"""
     title = models.CharField(max_length=100)
     created = models.DateTimeField(default=timezone.now)
@@ -54,8 +54,8 @@ class Article(models.Model):
     )
 
 
-    category = models.ForeignKey(
-        Category,
+    topic = models.ForeignKey(
+        topic,
         null=True,
         blank=True,
         on_delete=models.SET_NULL,

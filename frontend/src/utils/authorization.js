@@ -19,7 +19,6 @@ async function authorization() {
     // 初始 token 未过期
     if (expiredTime > current) {
         hasLogin = true;
-        // console.log('authorization access')
     }
     // 初始 token 过期
     // 申请刷新 token
@@ -35,20 +34,17 @@ async function authorization() {
             storage.removeItem('refresh.myblog');
 
 
-            // console.log('authorization refresh')
         }
         catch (err) {
             storage.clear();
             hasLogin = false;
 
-            // console.log('authorization err')
         }
     }
     // 无任何有效 token
     else {
         storage.clear();
         hasLogin = false;
-        // console.log('authorization exp')
     }
 
     return [hasLogin, username,isSuperuser]
