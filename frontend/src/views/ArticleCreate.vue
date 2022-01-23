@@ -13,7 +13,7 @@
         <span>标签：</span>
         <input v-model="tags" type="text" placeholder="输入标签，用逗号分隔" />
       </div>
-      <editor v-model="body"  :toolbarsExclude="toolbarsExclude" @onUploadImg="onUploadImg" />
+      <editor v-model="body"  :toolbarsExclude="toolbarsExclude" @onUploadImg="onFileChange" />
       <div class="form-elem">
         <button v-on:click.prevent="submit">提交</button>
       </div>
@@ -22,7 +22,7 @@
   <BlogFooter />
 </template>
 
-<script lang="ts">
+<script lang='typescrip'>
 import BlogHeader from "@/components/BlogHeader.vue";
 import BlogFooter from "@/components/BlogFooter.vue";
 import axios from "axios";
@@ -61,10 +61,28 @@ export default {
       .then((response) => (this.categories = response.data));
   },
   methods: {
-    onUploadImg(files) {
-      console.log(Array.from(files));
-      console.log(files[0]);
-    },
+  async onUploadImg(files: FileList, callback: (urls: string[]) => void) {
+  const res = await Promise.all(
+    Array.from(files).map((file) => {
+      return new Promise((rev, rej) => {
+        const form = new FormData();
+        form.append('file', file);
+
+        axios
+          .post('/api/avatar/', form, {
+            headers: {
+              'Content-Type': 'multipart/form-data',
+            Authorization: "Bearer " + localStorage.getItem("access.myblog"),
+            }
+          })
+          .then((res) => rev(res))
+          .catch((error) => rej(error));
+      });
+    })
+  );
+
+  callback(res.map((item: any) => item.data.url));
+},
     onFileChange(e) {
       // 将文件二进制数据添加到提交数据中
       const file = e.target.files[0];
@@ -79,7 +97,7 @@ export default {
             Authorization: "Bearer " + localStorage.getItem("access.myblog"),
           },
         })
-        .then((response) => (this.avatarID = response.data.id));
+        .then((response) => (this.avatarID = response.data.id,console.log(response.data + '')));
     },
     // 根据分类是否被选中，按钮的颜色发生变化
     // 这里可以看出 css 也是可以被 vue 绑定的，很方便
