@@ -22,7 +22,7 @@
   <BlogFooter />
 </template>
 
-<script lang='typescrip'>
+<script lang='ts'>
 import BlogHeader from "@/components/BlogHeader.vue";
 import BlogFooter from "@/components/BlogFooter.vue";
 import axios from "axios";
